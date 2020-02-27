@@ -30,8 +30,21 @@ class RecipeBox extends React.Component {
 }
 
 class RecipeList extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {recipes: []}
+  }
+
+  componentDidMount(){
+    fetch('/api/recipes')
+      .then(res => res.json())
+      .then(json => {
+        this.setState({recipes: json.data})
+      })
+      .catch(err => (console.log(err)));
+  }
   render() {
-    const recipes = this.props.recipes.map((r) =>
+    const recipes = this.state.recipes.map((r) =>
       <RecipeBox key={r.name} name={r.name} url={r.url}/>
     );
     return (
@@ -42,25 +55,11 @@ class RecipeList extends React.Component {
   }
 }
 
-const RECIPES = [
-  {name: "Lasagna", url: ""},
-  {name: "Penne alla Vodka", url: "https://www.foodnetwork.com/recipes/rachael-ray/you-wont-be-single-for-long-vodka-cream-pasta-recipe-1912258"},
-  {name: "Carbonara", url: ""},
-  {name: "Minershi", url: ""},
-  {name: "Lemon Poppy Seed Chicken", url: "https://www.rachaelrayshow.com/recipe/15613_Lemon_Poppy_Chicken_With_Sweet_Pea_amp_Mint_Couscous"},
-  {name: "Lemon Caper Chicken", url: ""},
-  {name: "Lemon Herb Chicken", url: ""},
-  {name: "Ribs", url: ""},
-  {name: "Caesar Salad", url: ""},
-  {name: "Braised Chicken and Leeks", url: ""},
-  {name: "Lemon Poppy Seed Bundt Cake", url: "https://www.onceuponachef.com/recipes/glazed-lemon-poppy-seed-cake.html"}
-];
-
 function App() {
   return (
     <div className="App">
       <h1>Recipe App</h1>
-      <RecipeList recipes={RECIPES}/>
+      <RecipeList />
     </div>
   );
 }
