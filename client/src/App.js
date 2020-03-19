@@ -39,7 +39,7 @@ class RecipeList extends React.Component {
     fetch('/api/recipes')
       .then(res => res.json())
       .then(json => {
-        this.setState({recipes: json.data})
+        this.setState({recipes: json})
       })
       .catch(err => (console.log(err)));
   }

@@ -11,6 +11,9 @@
 # production
 **/build
 
+# AWS keys
+**/.aws-auth.js
+
 # misc
 .DS_Store
 .env.local
