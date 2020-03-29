@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  api:
+    container_name: recipe_api
+    restart: always
+    # build: ./api
+    image: recipe-api
+  web:
+    container_name: recipe_web
+    image: recipe-server
+    ports:
+      - '80:80'
