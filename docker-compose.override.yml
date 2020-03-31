@@ -4,6 +4,8 @@ services:
   api:
     ports:
       - '5000:5000'
+    volumes:
+      - //c/Users/Chris/projects/recipe-app/api:/api
   client:
     container_name: recipe_client
     image: recipe-client
