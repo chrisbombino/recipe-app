@@ -18,22 +18,9 @@ class RecipeBox extends React.Component {
   }
 
   componentDidMount(){
-    fetch('/api/v1/images/coming-soon')
-      .then(res => {
-        if(res.status !== 200) {
-          this.setState({
-            loading: false,
-            error: true
-          });
-        } else return res.text();
-      })
-      .then(data => {
-        this.setState({
-          loading: false,
-          img_url: data
-        });
-      })
-      .catch(err => console.log(err));
+    this.setState({
+      loading: false
+    });
   }
 
   render() {
@@ -49,7 +36,7 @@ class RecipeBox extends React.Component {
           <Link target={'_blank'} href={this.props.url}>
             <CardMedia
               component="img"
-              image={this.state.img_url}
+              image={`https://d90xi065s2eu7.cloudfront.net/${this.props.img}`}
               height="150"
             />
             <CardContent>{this.props.name}</CardContent>
@@ -82,8 +69,8 @@ class RecipeList extends React.Component {
       .catch(err => (console.log(err)));
   }
   render() {
-    const recipes = this.state.recipes.map((r) =>
-      <RecipeBox key={r.name} name={r.name} url={r.url}/>
+    const recipes = this.state.recipes.map((recipe) =>
+      <RecipeBox key={recipe.name} name={recipe.name} url={recipe.url} img={recipe.img}/>
     );
 
     if(this.state.loading) {
