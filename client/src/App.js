@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Link from '@material-ui/core/Link';
 
 class RecipeBox extends React.Component {
@@ -74,7 +75,7 @@ class RecipeList extends React.Component {
     );
 
     if(this.state.loading) {
-      return(<h1>LOADING</h1>);
+      return(<CircularProgress size={60} />);
     } else {
       return (
           <Grid style={{margin: '0px', width:'100%', padding: '0px 150px'}} container spacing={7}>
