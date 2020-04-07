@@ -6,6 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box'
+import Skeleton from '@material-ui/lab/Skeleton';
 import Link from '@material-ui/core/Link';
 
 class RecipeBox extends React.Component {
@@ -26,7 +28,15 @@ class RecipeBox extends React.Component {
 
   render() {
     if(this.state.loading) {
-      return(<h1>Loading</h1>)
+      return(
+        <Grid item xs={6} md={4} xl={3}>
+          <Box width={'100%'} marginRight={0.5}>
+            <Skeleton variant="rect" height={150}/>
+            <Skeleton height={40}/>
+          </Box>
+        </Grid>
+
+      )
     } else if(this.state.error) {
       return(<h1>Error</h1>)
     } else {
