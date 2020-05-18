@@ -1,7 +1,13 @@
 const express = require('express');
 const AWS = require('aws-sdk');
 const app = express();
-const auth = require('./.aws-auth'); // ./.aws-auth.js is hidden from source control
+require('dotenv').config();
+
+const auth = {
+    accessKeyId: process.env.accessKeyId,
+    secretAccessKey: process.env.secretAccessKey,
+    region: process.env.region
+}
 
 AWS.config.update(auth);
 
@@ -24,4 +30,6 @@ app.get('/api/v1/recipes', (req, res) => {
 });
 
 const port = process.env.PORT || 5000
-app.listen(port);
+app.listen(port, process.env.NODE_ENV !== 'production' ? '' : console.log(`server running on port ${port}`));
+
+module.exports = app;
