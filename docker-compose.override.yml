@@ -6,10 +6,11 @@ services:
       - '5000:5000'
     volumes:
       - //c/Users/Chris/projects/recipe-app/api:/api
+    environment:
+      - NODE_ENV=dev
   client:
     container_name: recipe_client
     image: recipe-client
-    # build: ./client
     ports:
       - '3000:3000'
     environment:

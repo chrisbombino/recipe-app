@@ -4,8 +4,9 @@ services:
   api:
     container_name: recipe_api
     restart: always
-    # build: ./api
     image: recipe-api
+    env_file:
+      - ./.env
   web:
     container_name: recipe_web
     image: recipe-server

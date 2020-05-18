@@ -12,7 +12,7 @@
 **/build
 
 # AWS keys
-**/.aws-auth.js
+**/.env
 
 # misc
 .DS_Store

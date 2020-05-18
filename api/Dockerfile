@@ -2,7 +2,6 @@ FROM node:8
 
 WORKDIR /api
 
-COPY .aws-auth.js ./
 COPY app.js ./
 COPY *.json ./
 
