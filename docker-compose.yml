@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  api:
+    container_name: recipe_api
+    restart: always
+    image: recipe-api
+    env_file:
+      - ./.env
+  web:
+    container_name: recipe_web
+    image: recipe-server
+    ports:
+      - '80:80'

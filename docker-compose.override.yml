@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  api:
+    ports:
+      - '5000:5000'
+    volumes:
+      - //c/Users/Chris/projects/recipe-app/api:/api
+    environment:
+      - NODE_ENV=dev
+  client:
+    container_name: recipe_client
+    image: recipe-client
+    ports:
+      - '3000:3000'
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - //c/Users/Chris/projects/recipe-app/client:/client
