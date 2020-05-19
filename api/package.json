@@ -4,7 +4,7 @@
   "description": "API (backend) for recipe app",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --exit"
   },
   "author": "Chris Bombino",
   "license": "ISC",
