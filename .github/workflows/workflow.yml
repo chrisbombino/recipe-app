@@ -1,0 +1,39 @@
+name: Recipe App Tests
+
+on: [push, pull_request]
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Test Node.js API
+      uses: actions/setup-node@v1
+      with:
+        node-version: 8
+    - name: Install Dependencies
+      working-directory: ./api
+      run: npm ci
+    - name: Run Tests
+      env:
+        accessKeyId: ${{ secrets.AWS_accessKeyId }}
+        secretAccessKey: ${{ secrets.AWS_secretAccessKey }}
+        region: ${{ secrets.AWS_region }}
+      working-directory: ./api
+      run: npm test
+  client-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo client tests!
+  integration-tests:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: [api-tests, client-tests]
+    steps:
+      - run: echo integration tests!
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [api-tests, client-tests, integration-tests]
+    if: github.refs == 'refs/head/master' && github.event_name == 'push'
+    steps:
+      - run: echo deploying code!!
