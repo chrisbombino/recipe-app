@@ -27,13 +27,13 @@ jobs:
       - run: echo client tests!
   integration-tests:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || (github.ref == 'refs/heads/master' && github.event_name == 'push')
     needs: [api-tests, client-tests]
     steps:
       - run: echo integration tests!
   deploy:
     runs-on: ubuntu-latest
     needs: [api-tests, client-tests, integration-tests]
-    if: github.ref == 'refs/head/master' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     steps:
       - run: echo deploying code!!
