@@ -14,6 +14,10 @@
 # AWS keys
 **/.env
 
+# Terraform
+*.tfstate*
+**/.terraform
+
 # misc
 .DS_Store
 .env.local
