@@ -8,4 +8,5 @@ The app uses a React front end with a NodeJS API. It's served by a multi-contain
 - Developing a front end with React and interacting with an API
 - Creating a multi-container Docker setup with docker-compose
 - Implementing CI/CD with GitHub Actions
-- Various AWS services (EC2, S3, DynamoDB, CloudFront)
+- Various AWS services (EC2, S3, DynamoDB, IAM, CloudFront)
+- Using Terraform to manage AWS Infrastructure
