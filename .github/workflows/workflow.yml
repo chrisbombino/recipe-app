@@ -50,6 +50,39 @@ jobs:
           docker build -t recipe-api ./api
           docker build -t recipe-server ./web
           docker-compose -f docker-compose.yml up -d
+  build:
+    runs-on: ubuntu-latest
+    needs: [api-tests, client-tests, integration-tests]
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    env:
+      test: test_version
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Version
+        run: echo ::set-env name=VERSION::$(date +"%Y.%m.%d")-$(echo $GITHUB_SHA | cut -c 1-7)
+      - name: Build API Image
+        uses: docker/build-push-action@v1
+        with:
+          username: chrisbombino
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: chrisbombino/recipe-api
+          tags: latest,${{env.VERSION}}
+          path: ./api
+      - name: Create Client Production Build
+        working-directory: ./client
+        run: |
+          npm install
+          npm run build
+          cp -r build/ ../web/
+      - name: Build Web Image
+        uses: docker/build-push-action@v1
+        with:
+          username: chrisbombino
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: chrisbombino/recipe-server
+          tags: latest,${{env.VERSION}}
+          path: ./web
   deploy:
     runs-on: ubuntu-latest
     needs: [api-tests, client-tests, integration-tests]
