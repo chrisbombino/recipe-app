@@ -17,6 +17,7 @@
 # Terraform
 *.tfstate*
 **/.terraform
+**/terraform.tfvars
 
 # misc
 .DS_Store
