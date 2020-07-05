@@ -9,6 +9,42 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box'
 import Skeleton from '@material-ui/lab/Skeleton';
 import Link from '@material-ui/core/Link';
+import Chip from '@material-ui/core/Chip';
+
+class ActiveTagList extends React.Component {
+  render() {
+    const activeTags = this.props.tags.map(tag =>
+      <ActiveTag key={tag} tag={tag} handleTagDelete={this.props.handleTagDelete} />
+    );
+    return activeTags
+  }
+}
+
+class ActiveTag extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {}
+  }
+
+  handleDelete = () => {
+    this.props.handleTagDelete(this.props.tag)
+  }
+
+  render() {
+    return <Chip label={this.props.tag} color="primary" onDelete={this.handleDelete}/>
+  }
+}
+
+class RecipeFilters extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {}
+  }
+
+  render() {
+    return <h3>Filters:</h3>
+  }
+}
 
 class RecipeBox extends React.Component {
   constructor(props){
@@ -81,7 +117,7 @@ class RecipeList extends React.Component {
   }
   render() {
     const recipes = this.state.recipes.map((recipe) =>
-      <RecipeBox key={recipe.name} name={recipe.name} url={recipe.url} img={recipe.img}/>
+      <RecipeBox key={recipe.name} name={recipe.name} tags={recipe.tags} url={recipe.url} img={recipe.img}/>
     );
 
     if(this.state.loading) {
@@ -97,11 +133,35 @@ class RecipeList extends React.Component {
   }
 }
 
+class RecipeApp extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      activeTags:  ["Dinner", "Dessert", "Italian"]
+    }
+  }
+
+  handleTagDelete = (tag) => {
+    let newTags = this.state.activeTags.filter(x => x !== tag)
+    this.setState({activeTags: newTags})
+  }
+
+  render() {
+    return (
+      <div>
+        <ActiveTagList tags={this.state.activeTags} handleTagDelete={this.handleTagDelete} />
+        <RecipeFilters />
+        <RecipeList />
+      </div>
+    )
+  }
+}
+
 function App() {
   return (
     <div className="App">
       <h1>Recipe App</h1>
-      <RecipeList />
+      <RecipeApp />
     </div>
   );
 }
