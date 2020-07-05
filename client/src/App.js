@@ -75,7 +75,10 @@ class RecipeBox extends React.Component {
       )
     } else if(this.state.error) {
       return(<h1>Error</h1>)
-    } else {
+    } else if(!this.props.show) {
+      return null
+    }
+    else {
     return (
       <Grid item xs={6} md={4} xl={3}>
         <Card>
@@ -115,9 +118,21 @@ class RecipeList extends React.Component {
       })
       .catch(err => (console.log(err)));
   }
+
+  isRecipeInActiveTags = (recipe) => {
+    for(let i = 0; i < this.props.activeTags.length ; i++) {
+      if(!(this.props.activeTags[i].toLowerCase() in recipe.tags)) {
+        return false
+      }
+    }
+    return true
+  }
+
   render() {
-    const recipes = this.state.recipes.map((recipe) =>
-      <RecipeBox key={recipe.name} name={recipe.name} tags={recipe.tags} url={recipe.url} img={recipe.img}/>
+    const recipes = this.state.recipes.map(recipe => {
+      let showRecipe = this.isRecipeInActiveTags(recipe)
+      return <RecipeBox key={recipe.name} name={recipe.name} show={showRecipe} url={recipe.url} img={recipe.img}/>
+    }
     );
 
     if(this.state.loading) {
@@ -151,7 +166,7 @@ class RecipeApp extends React.Component {
       <div>
         <ActiveTagList tags={this.state.activeTags} handleTagDelete={this.handleTagDelete} />
         <RecipeFilters />
-        <RecipeList />
+        <RecipeList activeTags={this.state.activeTags} />
       </div>
     )
   }
