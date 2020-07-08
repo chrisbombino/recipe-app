@@ -31,18 +31,39 @@ class ActiveTag extends React.Component {
   }
 
   render() {
-    return <Chip label={this.props.tag} color="primary" onDelete={this.handleDelete}/>
+    return <Chip label={this.props.tag} color="primary" onClick={this.handleDelete} onDelete={this.handleDelete}/>
   }
 }
 
-class RecipeFilters extends React.Component {
+class RecipeFilterList extends React.Component {
   constructor(props){
     super(props);
     this.state = {}
   }
 
+  handleClick = (tag) => {
+    this.props.addTag(tag)
+  }
+
   render() {
-    return <h3>Filters:</h3>
+    return (
+      <div>
+        <h3>Filters:</h3>
+        {this.props.inactiveTags.map(tag =>
+          <RecipeFilter tag={tag} handleClick={this.handleClick} />
+        )}
+      </div>
+    )
+  }
+}
+
+class RecipeFilter extends React.Component {
+  handleClick = () => {
+    this.props.handleClick(this.props.tag)
+  }
+
+  render() {
+    return <Chip label={this.props.tag} color="default" onClick={this.handleClick}/>
   }
 }
 
@@ -139,7 +160,7 @@ class RecipeList extends React.Component {
       return(<CircularProgress size={60} />);
     } else {
       return (
-          <Grid style={{margin: '0px', width:'100%', padding: '0px 150px'}} container spacing={7}>
+          <Grid style={{margin: '0px', width:'100%', padding: '0% 10% 0% 0%'}} container spacing={7}>
             {recipes}
           </Grid>
       );
@@ -152,21 +173,37 @@ class RecipeApp extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      activeTags:  ["Dinner", "Dessert", "Italian"]
+      activeTags:  [],
+      inactiveTags: ["Dinner", "Dessert", "Italian", "Indian", "Salad", "Breakfast", "BBQ"]
     }
   }
 
   handleTagDelete = (tag) => {
-    let newTags = this.state.activeTags.filter(x => x !== tag)
-    this.setState({activeTags: newTags})
+    this.setState(prevState => ({
+      activeTags: prevState.activeTags.filter(t => t !== tag),
+      inactiveTags: [...prevState.inactiveTags, tag]
+    }));
+  }
+
+  addTag = (tag) => {
+    this.setState(prevState => ({
+      activeTags: [...prevState.activeTags, tag],
+      inactiveTags: prevState.inactiveTags.filter(t => t !== tag)
+    }));
   }
 
   render() {
     return (
       <div>
         <ActiveTagList tags={this.state.activeTags} handleTagDelete={this.handleTagDelete} />
-        <RecipeFilters />
-        <RecipeList activeTags={this.state.activeTags} />
+        <Grid container>
+          <Grid item xs={0} md={2}>
+            <RecipeFilterList addTag={this.addTag} inactiveTags={this.state.inactiveTags} />
+          </Grid>
+          <Grid item xs={12} md={10}>
+            <RecipeList activeTags={this.state.activeTags} />
+          </Grid>
+        </Grid>
       </div>
     )
   }
