@@ -7,7 +7,7 @@ class RecipeFilter extends React.Component {
   }
 
   render() {
-    return <Chip label={this.props.tag} color="default" onClick={this.handleClick}/>
+    return <Chip style={{margin: '3px'}} label={this.props.tag} color="default" onClick={this.handleClick}/>
   }
 }
 

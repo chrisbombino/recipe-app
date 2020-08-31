@@ -12,7 +12,7 @@ class ActiveTag extends React.Component {
   }
 
   render() {
-    return <Chip label={this.props.tag} color="primary" onClick={this.handleDelete} onDelete={this.handleDelete}/>
+    return <Chip style={{margin: '3px'}} label={this.props.tag} color="primary" onClick={this.handleDelete} onDelete={this.handleDelete}/>
   }
 }
 
