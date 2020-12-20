@@ -60,15 +60,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Set Version
-        run: echo ::set-env name=VERSION::$(date +"%Y.%m.%d")-$(echo $GITHUB_SHA | cut -c 1-7)
-      - name: Build API Image
-        uses: docker/build-push-action@v1
+        run: echo "VERSION=$(date +"%Y.%m.%d")-$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
           username: chrisbombino
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: chrisbombino/recipe-api
-          tags: latest,${{env.VERSION}}
-          path: ./api
+      - name: Build API Image
+        uses: docker/build-push-action@v2
+        with:
+          tags: chrisbombino/recipe-api:latest,chrisbombino/recipe-api:${{env.VERSION}}
+          file: ./api/Dockerfile
+          context: ./api
+          push: true
       - name: Create Client Production Build
         working-directory: ./client
         run: |
@@ -76,13 +82,12 @@ jobs:
           npm run build
           cp -r build/ ../web/
       - name: Build Web Image
-        uses: docker/build-push-action@v1
+        uses: docker/build-push-action@v2
         with:
-          username: chrisbombino
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: chrisbombino/recipe-server
-          tags: latest,${{env.VERSION}}
-          path: ./web
+          tags: chrisbombino/recipe-server:latest,chrisbombino/recipe-server:${{env.VERSION}}
+          file: ./web/Dockerfile
+          context: ./web
+          push: true
   deploy:
     runs-on: ubuntu-latest
     needs: [api-tests, client-tests, integration-tests]
