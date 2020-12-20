@@ -5,7 +5,7 @@ services:
     ports:
       - '5000:5000'
     volumes:
-      - //c/Users/Chris/projects/recipe-app/api:/api
+      - ./api:/api
     environment:
       - NODE_ENV=dev
   client:
@@ -16,4 +16,4 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
-      - //c/Users/Chris/projects/recipe-app/client:/client
+      - ./client:/client
