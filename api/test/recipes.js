@@ -68,10 +68,10 @@ describe('GET /api/v1/bad-endpoint',  () => {
   });
 });
 
-describe('POST /login', () => {
+describe('POST /api/v1/login', () => {
   it('Should return 401 error', (done) => {
     chai.request(app)
-      .post('/login')
+      .post('/api/v1/login')
       .send({ username: "abc", password: "123" })
       .end((err, res) => {
         expect(res.status).to.equal(401);
