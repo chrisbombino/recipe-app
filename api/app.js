@@ -131,7 +131,7 @@ app.post('/api/v1/recipes', jwtMiddleware, verifyRecipeDoesNotExist, (req, res) 
   })
 });
 
-app.post("/login", (req, res) => {
+app.post("/api/v1/login", (req, res) => {
   username = req.body.username
   password = req.body.password
 
