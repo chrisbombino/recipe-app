@@ -15,5 +15,5 @@ services:
       - '3000:3000'
     environment:
       - CHOKIDAR_USEPOLLING=true
-    volumes:
-      - ./client:/client
+    #volumes:
+    #  - /Users/chris/Documents/projects/recipe-app/client/:/client/

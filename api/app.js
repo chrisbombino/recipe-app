@@ -1,6 +1,8 @@
 const express = require('express');
 const uuid = require('uuid')
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser')
+
 const AWS = require('aws-sdk');
 const app = express();
 require('dotenv').config();
@@ -19,6 +21,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
 
 function jwtMiddleware(req, res, next) {
   const authHeader = req.headers.authorization
@@ -137,7 +140,8 @@ app.post("/api/v1/login", (req, res) => {
 
   authenticateUser(username, password).then(user => {
     const token = jwt.sign(user, process.env.jwtTokenSecret, { expiresIn: "1h" })
-    res.status(200).json({ token: token })
+    res.cookie("jwt", token, { httpOnly: true, maxAge: 1000 * 60 * 60 })
+    res.status(200).json({ user: user })
   }).catch(err => {
     res.status(err.statusCode).json({ msg: err.msg })
   })
